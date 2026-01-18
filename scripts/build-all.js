@@ -10,6 +10,36 @@ const rootDir = join(__dirname, '..');
 const decksDir = join(rootDir, 'decks');
 const distDir = join(rootDir, 'dist');
 
+// Get repo name for GitHub Pages base path
+// Priority: BASE_PATH env var > GITHUB_REPOSITORY > git remote
+function getRepoName() {
+  // If BASE_PATH is explicitly set, use it (e.g., "/slidev" or "/my-slides")
+  if (process.env.BASE_PATH) {
+    return process.env.BASE_PATH.replace(/^\/|\/$/g, ''); // strip leading/trailing slashes
+  }
+
+  // GitHub Actions provides GITHUB_REPOSITORY as "owner/repo"
+  if (process.env.GITHUB_REPOSITORY) {
+    return process.env.GITHUB_REPOSITORY.split('/')[1];
+  }
+
+  // Try to get from git remote
+  try {
+    const remote = execSync('git remote get-url origin', { cwd: rootDir, encoding: 'utf-8' }).trim();
+    const match = remote.match(/\/([^/]+?)(?:\.git)?$/);
+    if (match) return match[1];
+  } catch {
+    // ignore
+  }
+
+  // Fallback to directory name
+  return 'slidev';
+}
+
+const repoName = getRepoName();
+console.log(`📍 Repository: ${repoName}`);
+console.log(`📍 Base path: /${repoName}/\n`);
+
 // Get all deck directories (excluding _template)
 const decks = readdirSync(decksDir, { withFileTypes: true })
   .filter(dirent => dirent.isDirectory() && !dirent.name.startsWith('_'))
@@ -27,12 +57,14 @@ mkdirSync(distDir, { recursive: true });
 for (const deck of decks) {
   const slidesPath = `decks/${deck}/slides.md`;
   const outPath = join(distDir, deck);
+  const basePath = `/${repoName}/${deck}/`;
   console.log(`\n📦 Building deck: ${deck}`);
+  console.log(`   Base path: ${basePath}`);
 
   try {
     // Build with base path set for GitHub Pages subdirectory
     // Use absolute path for --out to ensure correct output location
-    execSync(`npx slidev build ${slidesPath} --base /${deck}/ --out "${outPath}"`, {
+    execSync(`npx slidev build ${slidesPath} --base ${basePath} --out "${outPath}"`, {
       cwd: rootDir,
       stdio: 'inherit'
     });
@@ -105,7 +137,7 @@ const indexHtml = `<!DOCTYPE html>
       ${decks.map(deck => `
       <a href="./${deck}/" class="deck">
         <div class="deck-title">${deck.charAt(0).toUpperCase() + deck.slice(1).replace(/-/g, ' ')}</div>
-        <div class="deck-path">/${deck}/</div>
+        <div class="deck-path">/${repoName}/${deck}/</div>
       </a>`).join('')}
     </div>
   </div>
