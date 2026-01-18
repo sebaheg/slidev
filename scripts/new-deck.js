@@ -12,8 +12,8 @@ const templateDir = join(decksDir, '_template');
 const deckName = process.argv[2];
 
 if (!deckName) {
-  console.error('Usage: npm run new <deck-name>');
-  console.error('Example: npm run new my-presentation');
+  console.error('Usage: pnpm new <deck-name>');
+  console.error('Example: pnpm new my-presentation');
   process.exit(1);
 }
 
@@ -48,18 +48,10 @@ try {
   console.warn('Warning: Could not create symlinks (may need admin rights on Windows)');
 }
 
-// Read and update package.json to add scripts for new deck
-const packageJsonPath = join(rootDir, 'package.json');
-const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
-
-packageJson.scripts[`dev:${deckName}`] = `slidev decks/${deckName}/slides.md --open`;
-packageJson.scripts[`build:${deckName}`] = `slidev build decks/${deckName}/slides.md`;
-packageJson.scripts[`export:${deckName}`] = `slidev export decks/${deckName}/slides.md`;
-
-writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n');
-
 console.log(`\n✅ Created new deck: ${deckName}`);
 console.log(`\nTo start developing:`);
-console.log(`  npm run dev:${deckName}`);
+console.log(`  pnpm dev ${deckName}`);
 console.log(`\nTo build:`);
-console.log(`  npm run build:${deckName}`);
+console.log(`  pnpm build:deck ${deckName}`);
+console.log(`\nTo export to PDF:`);
+console.log(`  pnpm export ${deckName}`);
