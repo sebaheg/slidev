@@ -1,11 +1,14 @@
 {
-  "name": "slidev",
+  "name": "slidev-decks",
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "slidev build",
-    "dev": "slidev --open",
-    "export": "slidev export"
+    "dev": "echo 'Usage: npm run dev:demo (or any deck name)' && exit 1",
+    "dev:demo": "slidev decks/demo/slides.md --open",
+    "build": "node scripts/build-all.js",
+    "build:demo": "slidev build decks/demo/slides.md",
+    "export:demo": "slidev export decks/demo/slides.md",
+    "new": "node scripts/new-deck.js"
   },
   "dependencies": {
     "@slidev/cli": "^52.11.3",
