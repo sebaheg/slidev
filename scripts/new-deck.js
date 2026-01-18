@@ -48,6 +48,16 @@ try {
   console.warn('Warning: Could not create symlinks (may need admin rights on Windows)');
 }
 
+// Create public directory with symlinks for static assets
+const publicDir = join(newDeckDir, 'public');
+mkdirSync(publicDir, { recursive: true });
+try {
+  symlinkSync('../../../images', join(publicDir, 'images'));
+  symlinkSync('../../../plotly', join(publicDir, 'plotly'));
+} catch (error) {
+  console.warn('Warning: Could not create public symlinks');
+}
+
 console.log(`\n✅ Created new deck: ${deckName}`);
 console.log(`\nTo start developing:`);
 console.log(`  pnpm dev ${deckName}`);

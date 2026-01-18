@@ -31,9 +31,9 @@ layoutClass: gap-8
 
 **Sebastian Haglund**
 
-- Co-founder @ rebase.energy
-- Co-organizer of HEFTCom2024
-- Background in energy forecasting & ML
+- Co-founder @ **rebase.energy**
+- Background in energy trading
+- Love coding in Python ❤️
 
 </div>
 
@@ -41,19 +41,101 @@ layoutClass: gap-8
 
 <div class="mt-8">
 
-## Today's Talk
+<div style="text-align: right;">
+  <img src="/images/sebastian.webp" style="width: 60%;" />
+</div>
+
+
+
+</div>
+
+---
+
+# Common prediction problems in the energy sector
+
+<div class="grid grid-cols-3 gap-8 mt-16">
+
+<div v-click class="transition-all duration-500">
+  <img src="/images/wind-turbines.png" class="rounded-lg shadow-md h-48 w-full object-cover mb-4" />
+  
+  - Power forecasting
+  - Icing forecasting
+  - Wind speed estimation
+  - Anomaly detection
+</div>
+
+<div v-click class="transition-all duration-500">
+  <img src="/images/solar-panels.png" class="rounded-lg shadow-md h-48 w-full object-cover mb-4" />
+  
+  - Power forecasting
+  - Anomaly detection
+</div>
+
+<div v-click class="transition-all duration-500">
+  <img src="/images/city-skyline.png" class="rounded-lg shadow-md h-48 w-full object-cover mb-4" />
+  
+  - Demand forecasting
+  - Demand estimation
+  - Peak prediction
+  - Anomaly detection
+</div>
+
+</div>
+
+---
+
+# Why does deep learning struggle with tabular datasets?
+
+<div class="grid grid-cols-3 gap-6 mt-12">
+
+<div v-click class="border-2 border-red-500 rounded-lg p-4 bg-white/5">
+  <div class="text-lg font-semibold text-red-400 mb-2">
+    "Why do tree-based models still outperform deep learning on tabular data?"
+  </div>
+  <div class="text-sm opacity-75">
+    Léo Grinsztajn, Edouard Oyallon, Gaël Varoquaux<br/>
+    NeurIPS 2022
+  </div>
+</div>
+
+<div v-click class="border-2 border-red-500 rounded-lg p-4 bg-white/5">
+  <div class="text-lg font-semibold text-red-400 mb-2">
+    "Tabular Data: Deep Learning is Not All You Need"
+  </div>
+  <div class="text-sm opacity-75">
+    Ravid Shwartz-Ziv, Amitai Armon<br/>
+    NeurIPS 2021
+  </div>
+</div>
+
+<div v-click class="border-2 border-red-500 rounded-lg p-4 bg-white/5">
+  <div class="text-lg font-semibold text-red-400 mb-2">
+    "Deep Neural Networks and Tabular Data: A Survey"
+  </div>
+  <div class="text-sm opacity-75">
+    Vadim Borisov et al.<br/>
+    IEEE TNNLS 2022
+  </div>
+</div>
+
+</div>
+
+<div v-click class="mt-8 text-sm opacity-75">
+  <strong>Sources:</strong> 
+  <a href="https://arxiv.org/abs/2207.08815" class="text-blue-400">arxiv.org/abs/2207.08815</a>, 
+  <a href="https://arxiv.org/abs/2106.03253" class="text-blue-400">arxiv.org/abs/2106.03253</a>, 
+  <a href="https://arxiv.org/abs/2110.01889" class="text-blue-400">arxiv.org/abs/2110.01889</a>
+</div>
+
+---
+layout: center
+---
 
 1. What was HEFTCom2024?
 2. Why trees dominate energy forecasting
 3. The winning approach
 4. Key lessons learned
 5. Trees vs Deep Learning
-
-</div>
-
----
-layout: center
----
 
 # What is HEFTCom2024?
 
@@ -112,6 +194,12 @@ layout: center
 **Key Challenge**: Cable fault at Hornsea 1 reduced output mid-competition. Teams had to adapt!
 
 </div>
+
+---
+
+# Competition Results: Pinball Loss
+
+<iframe src="/plotly/heftcom24-pinball.html" class="w-full h-[450px] rounded-lg border-0"></iframe>
 
 ---
 
