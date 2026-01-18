@@ -5,15 +5,19 @@
   "scripts": {
     "dev": "echo 'Usage: npm run dev:demo (or any deck name)' && exit 1",
     "dev:demo": "slidev decks/demo/slides.md --open",
+    "dev:2026-01-21-aienergy": "slidev decks/2026-01-21-aienergy/slides.md --open",
     "build": "node scripts/build-all.js",
     "build:demo": "slidev build decks/demo/slides.md",
+    "build:2026-01-21-aienergy": "slidev build decks/2026-01-21-aienergy/slides.md",
     "export:demo": "slidev export decks/demo/slides.md",
+    "export:2026-01-21-aienergy": "slidev export decks/2026-01-21-aienergy/slides.md",
     "new": "node scripts/new-deck.js"
   },
   "dependencies": {
     "@slidev/cli": "^52.11.3",
     "@slidev/theme-default": "latest",
     "@slidev/theme-seriph": "latest",
+    "slidev-theme-geist": "^0.8.1",
     "vue": "^3.5.26"
   }
 }
