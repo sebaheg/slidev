@@ -190,13 +190,13 @@ where $\hat p_t^B = p_t^B-0.07 \cdot (y-q_t^{DA})$
 
 # Forecasting Track Results
 
-<iframe src="/plotly/heftcom24-pinball.html" class="w-full h-full rounded-lg border-0 -mt-4"></iframe>
+<iframe src="./plotly/heftcom24-pinball.html" class="w-full h-full rounded-lg border-0 -mt-4"></iframe>
 
 ---
 
 # Trading Track Results
 
-<iframe src="/plotly/heftcom24-revenue.html" class="w-full h-full rounded-lg border-0 -mt-4"></iframe>
+<iframe src="./plotly/heftcom24-revenue.html" class="w-full h-full rounded-lg border-0 -mt-4"></iframe>
 
 ---
 
@@ -234,51 +234,9 @@ class: text-center
 
 # The Results
 
-## Trees Dominated
-
----
-
-# Top 10 Forecasting Track
-
-| Rank | Team | Pinball (MWh) | Method |
-|------|------|---------------|--------|
-| 1 | **SVK** | 22.18 | CatBoost |
-| 2 | UI BUD | 23.18 | Gradient Boosting |
-| 3 | Rnt | 24.64 | AI Weather + Neural Networks |
-| 4 | GEB | 25.16 | Gradient Boosting |
-| 5 | BridgeForCast | 25.34 | Gradient Boosting |
-| 6 | quantopia | 25.38 | (Organizer baseline) |
-| 7 | LSEG Power Team | 25.74 | Gradient Boosting |
-| 8 | sukantabasu | 27.04 | Gradient Boosting |
-| 9 | Stochastic Parrots | 27.50 | Gradient Boosting |
-| 10 | EnergiWise | 27.65 | Gradient Boosting |
-
 <div class="mt-4 text-sm opacity-75">
 9 of top 10 used gradient boosted trees (CatBoost, XGBoost, LightGBM)
 </div>
-
----
-
-# Methods Used by Teams
-
-```mermaid {scale: 0.7}
-mindmap
-  root((Top Methods))
-    Gradient Boosted Trees
-      CatBoost
-      XGBoost
-      LightGBM
-    Feature Engineering
-      NWP grid points
-      Lagged features
-      Calendar features
-    Ensemble Strategies
-      Multi-model combination
-      Quantile aggregation
-    Separate Wind/Solar
-      75% of teams
-      Combined with meta-model
-```
 
 ---
 

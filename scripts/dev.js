@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { execSync } from 'child_process';
-import { existsSync, readdirSync } from 'fs';
+import { existsSync, readdirSync, symlinkSync, unlinkSync, lstatSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -28,6 +28,37 @@ const slidesPath = join(decksDir, deckName, 'slides.md');
 if (!existsSync(slidesPath)) {
   console.error(`Error: Deck "${deckName}" not found at ${slidesPath}`);
   process.exit(1);
+}
+
+// Create symlinks for shared assets (plotly, images) in deck directory for dev
+const assetsToLink = ['plotly', 'images'];
+for (const asset of assetsToLink) {
+  const srcPath = join(rootDir, asset);
+  const linkPath = join(deckDir, asset);
+  
+  if (existsSync(srcPath)) {
+    // Remove existing symlink if present
+    if (existsSync(linkPath)) {
+      try {
+        const stats = lstatSync(linkPath);
+        if (stats.isSymbolicLink()) {
+          unlinkSync(linkPath);
+        }
+      } catch (e) {
+        // ignore
+      }
+    }
+    
+    // Create symlink if it doesn't exist
+    if (!existsSync(linkPath)) {
+      try {
+        symlinkSync(srcPath, linkPath, 'dir');
+        console.log(`✅ Linked ${asset}/ for development`);
+      } catch (e) {
+        console.warn(`⚠️ Could not create symlink for ${asset}/: ${e.message}`);
+      }
+    }
+  }
 }
 
 execSync(`npx slidev "${slidesPath}" --open`, {

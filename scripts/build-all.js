@@ -75,6 +75,20 @@ for (const deck of decks) {
   }
 }
 
+// Copy shared assets (plotly, images) into each deck's build output
+const assetsToCopy = ['plotly', 'images'];
+for (const deck of decks) {
+  const deckDistPath = join(distDir, deck);
+  for (const asset of assetsToCopy) {
+    const srcPath = join(rootDir, asset);
+    const destPath = join(deckDistPath, asset);
+    if (existsSync(srcPath)) {
+      cpSync(srcPath, destPath, { recursive: true });
+      console.log(`✅ Copied ${asset}/ to dist/${deck}/`);
+    }
+  }
+}
+
 // Create index.html that lists all decks
 const indexHtml = `<!DOCTYPE html>
 <html lang="en">
