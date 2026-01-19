@@ -11,9 +11,7 @@ transition: slide-left
 mdc: true
 ---
 
-# Trees for Energy Forecasting
-
-Lessons from HEFTCom2024
+<h1 class="text-5xl!">Trees for energy forecasting <br> and HEFTCom2024 experiences</h1>
 
 <div class="abs-br m-6 text-sm opacity-75">
   AI x Energy Tech Meetup
@@ -84,64 +82,11 @@ layoutClass: gap-8
 
 ---
 
-# Why does deep learning struggle with tabular datasets?
-
-<div class="grid grid-cols-3 gap-6 mt-12">
-
-<div v-click class="border-2 border-red-500 rounded-lg p-4 bg-white/5">
-  <div class="text-lg font-semibold text-red-400 mb-2">
-    "Why do tree-based models still outperform deep learning on tabular data?"
-  </div>
-  <div class="text-sm opacity-75">
-    Léo Grinsztajn, Edouard Oyallon, Gaël Varoquaux<br/>
-    NeurIPS 2022
-  </div>
-</div>
-
-<div v-click class="border-2 border-red-500 rounded-lg p-4 bg-white/5">
-  <div class="text-lg font-semibold text-red-400 mb-2">
-    "Tabular Data: Deep Learning is Not All You Need"
-  </div>
-  <div class="text-sm opacity-75">
-    Ravid Shwartz-Ziv, Amitai Armon<br/>
-    NeurIPS 2021
-  </div>
-</div>
-
-<div v-click class="border-2 border-red-500 rounded-lg p-4 bg-white/5">
-  <div class="text-lg font-semibold text-red-400 mb-2">
-    "Deep Neural Networks and Tabular Data: A Survey"
-  </div>
-  <div class="text-sm opacity-75">
-    Vadim Borisov et al.<br/>
-    IEEE TNNLS 2022
-  </div>
-</div>
-
-</div>
-
-<div v-click class="mt-8 text-sm opacity-75">
-  <strong>Sources:</strong> 
-  <a href="https://arxiv.org/abs/2207.08815" class="text-blue-400">arxiv.org/abs/2207.08815</a>, 
-  <a href="https://arxiv.org/abs/2106.03253" class="text-blue-400">arxiv.org/abs/2106.03253</a>, 
-  <a href="https://arxiv.org/abs/2110.01889" class="text-blue-400">arxiv.org/abs/2110.01889</a>
-</div>
-
----
-layout: center
----
-
-1. What was HEFTCom2024?
-2. Why trees dominate energy forecasting
-3. The winning approach
-4. Key lessons learned
-5. Trees vs Deep Learning
-
 # What is HEFTCom2024?
 
 **Hybrid Energy Forecasting and Trading Competition**
 
-<div class="grid grid-cols-3 gap-8 mt-8 text-center">
+<div v-click class="grid grid-cols-3 gap-8 mt-12 text-center">
   <div class="p-4 bg-blue-500/10 rounded-lg">
     <div class="text-3xl font-bold text-blue-400">3.6 GW</div>
     <div class="text-sm opacity-75">Wind + Solar Portfolio</div>
@@ -156,8 +101,20 @@ layout: center
   </div>
 </div>
 
-<div class="mt-8 text-sm opacity-75">
-  Organized by IEEE PES Working Group on Energy Forecasting · Sponsored by Ørsted & Rebase Energy
+<div v-click>
+  <div class="text-center mt-8 font-bold">Organisers:</div>
+
+  <div class="mt-8 flex items-center justify-evenly gap-8">
+    <div class="p-4 bg-gray-500/10 rounded-lg">
+      <img src="/images/ieee-logo.png" class="h-12" alt="IEEE PES" />
+    </div>
+    <div class="p-4 bg-gray-500/10 rounded-lg">
+      <img src="/images/orsted-logo.svg" class="h-12" alt="Ørsted" />
+    </div>
+    <div class="p-4 bg-gray-500/10 rounded-lg">
+      <img src="/images/rebase-logo.svg" class="h-12" alt="Rebase Energy" />
+    </div>
+  </div>
 </div>
 
 ---
@@ -165,7 +122,7 @@ layout: center
 # Competition Setup
 
 <div class="grid grid-cols-2 gap-8">
-<div>
+<div v-click class="p-6 bg-blue-500/10 rounded-xl border border-blue-500/20">
 
 ## Forecasting Track
 
@@ -176,7 +133,7 @@ layout: center
 - Solar: East of England (2.4 GW)
 
 </div>
-<div>
+<div v-click class="p-6 bg-green-500/10 rounded-xl border border-green-500/20">
 
 ## Trading Track
 
@@ -189,7 +146,7 @@ layout: center
 </div>
 </div>
 
-<div class="mt-8 p-4 bg-yellow-500/10 rounded-lg">
+<div v-click class="mt-8 p-4 bg-yellow-500/10 rounded-lg">
 
 **Key Challenge**: Cable fault at Hornsea 1 reduced output mid-competition. Teams had to adapt!
 
@@ -197,15 +154,55 @@ layout: center
 
 ---
 
-# Competition Results: Pinball Loss
+# Objective Functions
 
-<iframe src="/plotly/heftcom24-pinball.html" class="w-full h-[450px] rounded-lg border-0"></iframe>
+<div class="grid grid-cols-2 gap-8 mt-8">
+<div v-click class="p-6 bg-blue-500/10 rounded-xl border border-blue-500/20">
+
+## Forecasting Track
+
+**Pinball Loss (Quantile Loss)**
+
+$$L_\tau(y, \hat{q}_\tau) = \begin{cases} \tau (y - \hat{q}_\tau) & \text{if } y \geq \hat{q}_\tau \\ (1-\tau) (\hat{q}_\tau - y) & \text{if } y < \hat{q}_\tau \end{cases}$$
+
+- $\tau \in \{0.1, 0.2, ..., 0.9\}$ (9 quantiles)
+- $y$ = actual generation
+- $\hat{q}_\tau$ = predicted quantile
+
+</div>
+<div v-click class="p-6 bg-green-500/10 rounded-xl border border-green-500/20">
+
+## Trading Track
+
+**Total Revenue**
+
+$$R = \sum_{t} p_t^{DA} \cdot q_t^{DA} + \hat p_t^B \cdot (y-q_t^{DA})$$
+where $\hat p_t^B = p_t^B-0.07 \cdot (y-q_t^{DA})$
+- $p_t^{DA}$ = day-ahead price
+- $q_t^{DA}$ = quantity sold
+- $y$ = actual generation
+- $\hat p_t^B$ = imbalance price
+- $\hat p_t^B$ = adjusted imbalance price
+</div>
+</div>
+
+---
+
+# Forecasting Track Results
+
+<iframe src="/plotly/heftcom24-pinball.html" class="w-full h-full rounded-lg border-0 -mt-4"></iframe>
+
+---
+
+# Trading Track Results
+
+<iframe src="/plotly/heftcom24-revenue.html" class="w-full h-full rounded-lg border-0 -mt-4"></iframe>
 
 ---
 
 # Why a Competition?
 
-<div class="grid grid-cols-2 gap-12 mt-8">
+<div class="grid grid-cols-2 gap-12 mt-4">
 <div>
 
 ## Problems with Academic Benchmarks
@@ -635,12 +632,57 @@ Questions?
 
 <div class="mt-12 text-sm opacity-75">
 
-**Sebastian Haglund** · Rebase Energy
+**Sebastian Haglund** · rebase.energy
 
-[rebase.energy](https://rebase.energy) · [@reaborned](https://twitter.com/reaborned)
+[website](https://rebase.energy) · [linkedin](https://www.linkedin.com/in/sebaheg/)
 
 </div>
 
 <div class="abs-br m-6 text-xs opacity-50">
-  Slides: github.com/sebaheg/slidev
+  Slides: sebaheg.com/slidev/2026-01-21-aienergy
+</div>
+
+---
+
+# Why does deep learning struggle with tabular datasets?
+
+<div class="grid grid-cols-3 gap-6 mt-12">
+
+<div v-click class="border-2 border-red-500 rounded-lg p-4 bg-white/5">
+  <div class="text-lg font-semibold text-red-400 mb-2">
+    "Why do tree-based models still outperform deep learning on tabular data?"
+  </div>
+  <div class="text-sm opacity-75">
+    Léo Grinsztajn, Edouard Oyallon, Gaël Varoquaux<br/>
+    NeurIPS 2022
+  </div>
+</div>
+
+<div v-click class="border-2 border-red-500 rounded-lg p-4 bg-white/5">
+  <div class="text-lg font-semibold text-red-400 mb-2">
+    "Tabular Data: Deep Learning is Not All You Need"
+  </div>
+  <div class="text-sm opacity-75">
+    Ravid Shwartz-Ziv, Amitai Armon<br/>
+    NeurIPS 2021
+  </div>
+</div>
+
+<div v-click class="border-2 border-red-500 rounded-lg p-4 bg-white/5">
+  <div class="text-lg font-semibold text-red-400 mb-2">
+    "Deep Neural Networks and Tabular Data: A Survey"
+  </div>
+  <div class="text-sm opacity-75">
+    Vadim Borisov et al.<br/>
+    IEEE TNNLS 2022
+  </div>
+</div>
+
+</div>
+
+<div v-click class="mt-8 text-sm opacity-75">
+  <strong>Sources:</strong> 
+  <a href="https://arxiv.org/abs/2207.08815" class="text-blue-400">arxiv.org/abs/2207.08815</a>, 
+  <a href="https://arxiv.org/abs/2106.03253" class="text-blue-400">arxiv.org/abs/2106.03253</a>, 
+  <a href="https://arxiv.org/abs/2110.01889" class="text-blue-400">arxiv.org/abs/2110.01889</a>
 </div>
