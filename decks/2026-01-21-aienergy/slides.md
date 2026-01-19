@@ -396,33 +396,6 @@ features.append('hour_cos')
 
 ---
 
-# Forecasting vs Trading Performance
-
-<div class="text-center">
-
-**Better forecasts → Better trading, but strategy matters too**
-
-</div>
-
-```mermaid {scale: 0.8}
-%%{init: {'theme': 'dark'}}%%
-xychart-beta
-    title "Pinball Score vs Revenue"
-    x-axis "Pinball Score (MWh)" [22, 25, 28, 31, 34, 37]
-    y-axis "Revenue (£m)" [83, 85, 87, 89]
-    line [88.8, 88.2, 87.5, 84.3, 85.5, 84.4]
-```
-
-<div class="mt-4 text-sm">
-
-- **Correlation exists** but not perfect (r² ≈ 0.7)
-- Strategic bidding added **£500k+** for top teams
-- Teams with similar forecasts had different revenues
-
-</div>
-
----
-
 # Trading Strategy Insights
 
 <div class="grid grid-cols-2 gap-8">

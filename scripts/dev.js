@@ -24,6 +24,7 @@ if (!deckName) {
 }
 
 const slidesPath = join(decksDir, deckName, 'slides.md');
+const deckDir = join(decksDir, deckName);
 
 if (!existsSync(slidesPath)) {
   console.error(`Error: Deck "${deckName}" not found at ${slidesPath}`);
